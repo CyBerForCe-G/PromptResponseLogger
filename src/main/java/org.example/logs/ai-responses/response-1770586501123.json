@@ -1,0 +1,31 @@
+{
+  "id" : "chatcmpl-97a889d0-59a4-4d86-a09e-9234671f02b7",
+  "object" : "chat.completion",
+  "created" : 1770586501,
+  "model" : "llama-3.1-8b-instant",
+  "choices" : [ {
+    "index" : 0,
+    "message" : {
+      "role" : "assistant",
+      "content" : "I'm doing well, thank you for asking. I'm a large language model, so I don't have feelings or emotions like humans do, but I'm always happy to help answer any questions or chat with you about a topic that interests you. How can I assist you today?"
+    },
+    "logprobs" : null,
+    "finish_reason" : "stop"
+  } ],
+  "usage" : {
+    "queue_time" : 0.045776631,
+    "prompt_tokens" : 42,
+    "prompt_time" : 0.002127809,
+    "completion_tokens" : 58,
+    "completion_time" : 0.068508723,
+    "total_tokens" : 100,
+    "total_time" : 0.070636532
+  },
+  "usage_breakdown" : null,
+  "system_fingerprint" : "fp_f757f4b0bf",
+  "x_groq" : {
+    "id" : "req_01kgzjvwdjf9yv7x15kj2fwdfj",
+    "seed" : 1953582780
+  },
+  "service_tier" : "on_demand"
+}

@@ -1,0 +1,31 @@
+{
+  "id" : "chatcmpl-53ef233f-0078-4d6e-98bf-1c5c671cb2a0",
+  "object" : "chat.completion",
+  "created" : 1770582671,
+  "model" : "llama-3.1-8b-instant",
+  "choices" : [ {
+    "index" : 0,
+    "message" : {
+      "role" : "assistant",
+      "content" : "Hello. I'm just a computer program, so I don't have feelings like humans do, but I'm functioning properly and ready to help with any questions or tasks you have. How can I assist you today?"
+    },
+    "logprobs" : null,
+    "finish_reason" : "stop"
+  } ],
+  "usage" : {
+    "queue_time" : 0.045442881,
+    "prompt_tokens" : 41,
+    "prompt_time" : 0.001944499,
+    "completion_tokens" : 44,
+    "completion_time" : 0.057382493,
+    "total_tokens" : 85,
+    "total_time" : 0.059326992
+  },
+  "usage_breakdown" : null,
+  "system_fingerprint" : "fp_f757f4b0bf",
+  "x_groq" : {
+    "id" : "req_01kgzf6zkyfmevhwb8dp6f3zac",
+    "seed" : 2000459852
+  },
+  "service_tier" : "on_demand"
+}

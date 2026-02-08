@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+llm:
+  active-provider: groq
+
+  groq:
+    api-key: dummy
+    base-url: https://localhost
+    model: test-model

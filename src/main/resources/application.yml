@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+
+logging:
+  file:
+    output-dir: src/main/java/org.example/logs/ai-responses
+
+llm:
+  active-provider: groq
+
+  groq:
+    api-key: ${API_KEY}
+    base-url: https://api.groq.com/openai/v1
+    model: llama-3.1-8b-instant
+
+  openai:
+    api-key: ${OPENAI_API_KEY}
+    base-url: https://openai/v1
+    model: gpt-4o-mini
