@@ -1,12 +1,12 @@
 package org.example.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.example.config.GroqAIConfig;
 import org.example.constants.ApplicationConstants;
 import org.example.interfaces.LLMProvider;
 import org.example.model.AIRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Component
 public class GroqLLMProvider implements LLMProvider {
@@ -29,13 +29,12 @@ public class GroqLLMProvider implements LLMProvider {
     }
 
     @Override
-    public JsonNode generate(AIRequest aiRequest) {
+    public Mono<String> generate(AIRequest aiRequest) {
         AIRequest provideRequest = new AIRequest(groqAIConfig.getModel(), aiRequest.getMessages());
         return webClient.post()
                 .uri(ApplicationConstants.COMPLETION_URL)
                 .bodyValue(provideRequest)
                 .retrieve()
-                .bodyToMono(JsonNode.class)
-                .block();
+                .bodyToMono(String.class);
     }
 }

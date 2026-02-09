@@ -7,6 +7,7 @@ import org.example.interfaces.LLMProvider;
 import org.example.model.AIRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Component
 public class OpenAILLMProvider implements LLMProvider {
@@ -27,13 +28,12 @@ public class OpenAILLMProvider implements LLMProvider {
     }
 
     @Override
-    public JsonNode generate(AIRequest aiRequest) {
+    public Mono<String> generate(AIRequest aiRequest) {
         AIRequest provideRequest = new AIRequest(openAIConfig.getModel(), aiRequest.getMessages());
         return webClient.post()
                 .uri(ApplicationConstants.COMPLETION_URL)
                 .bodyValue(provideRequest)
                 .retrieve()
-                .bodyToMono(JsonNode.class)
-                .block();
+                .bodyToMono(String.class);
     }
 }

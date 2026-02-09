@@ -1,7 +1,8 @@
 package org.example.interfaces;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import reactor.core.publisher.Mono;
 
 public interface LLMService {
-    JsonNode generateResponse(String prompt);
+    Mono<String> generateResponse(String prompt);
 }
