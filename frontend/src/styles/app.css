@@ -1,0 +1,55 @@
+body {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.chat-window {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.bubble {
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+}
+
+.bubble.user {
+    background: #2563eb;
+    align-self: flex-end;
+}
+
+.bubble.assistant {
+    background: #1e293b;
+    align-self: flex-start;
+}
+
+.prompt-input {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    background: #020617;
+}
+
+textarea {
+    flex: 1;
+    resize: none;
+}
+
+.cursor {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
