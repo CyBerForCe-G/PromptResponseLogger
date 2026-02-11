@@ -1,26 +1,73 @@
-export function streamPrompt(
+export async function streamPrompt(
     prompt: string,
     onToken: (token: string) => void,
     onComplete: () => void,
     onError?: (err: any) => void
 ) {
-    fetch("/api/stream", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
-    }).catch(onError);
+    try {
+        const response = await fetch("/api/stream", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt })
+        });
 
-    const source = new EventSource("/api/stream");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    source.onmessage = (event) => {
-        onToken(event.data);
-    };
+        const reader = response.body?.getReader();
+        const decoder = new TextDecoder();
 
-    source.onerror = (err) => {
-        source.close();
+        if (!reader) {
+            throw new Error("Stream reader not available");
+        }
+
+        let buffer = "";
+        let completed = false;
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+
+            let boundary;
+            while ((boundary = buffer.indexOf("\n\n")) !== -1) {
+                const rawEvent = buffer.slice(0, boundary);
+                buffer = buffer.slice(boundary + 2);
+
+                const lines = rawEvent.split("\n");
+                let eventData = "";
+
+                for (const line of lines) {
+                    if (line.startsWith("data:")) {
+                        eventData += line.slice(5);
+                    }
+                }
+
+                if (eventData === "[DONE]") {
+                    completed = true;
+                    break;
+                }
+
+                if (eventData === "[ERROR]") {
+                    throw new Error("Backend streaming error");
+                }
+
+                if (eventData) {
+                    onToken(eventData);
+                }
+            }
+        }
+
+        if (!completed) {
+            throw new Error("Stream ended unexpectedly");
+        }
+
+        onComplete();
+    } catch (err) {
+        console.error("Streaming error:", err);
         onError?.(err);
         onComplete();
-    };
-
-    return () => source.close();
+    }
 }

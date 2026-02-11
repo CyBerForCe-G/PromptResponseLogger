@@ -1,30 +1,74 @@
-import { useState } from "react";
-import { Message } from "../models/Message";
-import { useStream } from "./useStream";
+import {Message} from "../models/message";
+import {useState} from "react";
+import {streamPrompt} from "../api/streamApi";
 
 export function useChat() {
     const [messages, setMessages] = useState<Message[]>([]);
-    const stream = useStream();
+    const [streaming, setStreaming] = useState(false);
 
     const send = (prompt: string) => {
+        if (!prompt.trim() || streaming) return;
+
         const userMsg: Message = {
             id: crypto.randomUUID(),
             role: "user",
             content: prompt
         };
 
-        setMessages(prev => [...prev, userMsg]);
-
-        stream.start(prompt);
+        const assistantId = crypto.randomUUID();
 
         const assistantMsg: Message = {
-            id: crypto.randomUUID(),
+            id: assistantId,
             role: "assistant",
             content: ""
         };
 
-        setMessages(prev => [...prev, assistantMsg]);
+        setMessages(prev => [...prev, userMsg, assistantMsg]);
+        setStreaming(true);
+
+        streamPrompt(
+            prompt,
+
+            // ✅ Append raw token
+            (token) => {
+                setMessages(prev =>
+                    prev.map(msg =>
+                        msg.id === assistantId
+                            ? {
+                                ...msg,
+                                content: msg.content + token
+                            }
+                            : msg
+                    )
+                );
+            },
+
+            // Complete
+            () => {
+                setStreaming(false);
+            },
+
+            // Error
+            (error) => {
+                console.error("Stream failed:", error);
+
+                setMessages(prev =>
+                    prev.map(msg =>
+                        msg.id === assistantId
+                            ? {
+                                ...msg,
+                                content:
+                                    msg.content +
+                                    "\n\n⚠️ Connection interrupted"
+                            }
+                            : msg
+                    )
+                );
+
+                setStreaming(false);
+            }
+        );
     };
 
-    return { messages, stream, send };
+    return { messages, stream: { streaming }, send };
 }

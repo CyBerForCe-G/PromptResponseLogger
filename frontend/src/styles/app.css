@@ -5,51 +5,142 @@ body {
     color: #e5e7eb;
 }
 
+/* Page Layout */
 .page {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    transition: all 0.4s ease;
+}
+
+/* Center everything when empty */
+.page.empty {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Normal chat mode */
+.page.has-messages {
+    justify-content: flex-start;
+}
+
+/* Chat Window */
+.chat-window {
+    flex: 1;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.4s ease;
+}
+
+/* Message Bubble Base */
+.bubble {
+    padding: 14px 18px;
+    border-radius: 18px;
+    max-width: 75%;
+    line-height: 1.5;
+    font-size: 15px;
+    animation: fadeIn 0.3s ease;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+.bubble p {
+    margin: 0 0 8px 0;
+}
+
+/* User Bubble */
+.bubble.user {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    align-self: flex-end;
+    color: white;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Assistant Bubble */
+.bubble.assistant {
+    background: #1e293b;
+    align-self: flex-start;
+    color: #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Input Container */
+.prompt-input {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 24px auto;
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    background: #020617;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s ease;
+}
+
+/* When empty → center input */
+.page.empty .prompt-input {
+    margin: 0 auto;
+}
+
+/* Textarea */
+textarea {
+    flex: 1;
+    resize: none;
+    border: none;
+    outline: none;
+    padding: 12px;
+    border-radius: 12px;
+    background: #111827;
+    color: white;
+    font-size: 14px;
+}
+
+/* Send Button */
+button {
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+button:hover {
+    background: #1d4ed8;
 }
 
 .chat-window {
     flex: 1;
-    padding: 16px;
+    padding: 24px;
     overflow-y: auto;
+    scroll-behavior: smooth;
 }
 
-.bubble {
-    margin-bottom: 12px;
-    padding: 10px;
-    border-radius: 8px;
-    max-width: 80%;
-}
-
-.bubble.user {
-    background: #2563eb;
-    align-self: flex-end;
-}
-
-.bubble.assistant {
-    background: #1e293b;
-    align-self: flex-start;
-}
-
-.prompt-input {
-    display: flex;
-    gap: 8px;
-    padding: 12px;
-    background: #020617;
-}
-
-textarea {
-    flex: 1;
-    resize: none;
-}
-
+/* Streaming Cursor */
 .cursor {
+    margin-left: 4px;
     animation: blink 1s infinite;
 }
 
 @keyframes blink {
     50% { opacity: 0; }
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

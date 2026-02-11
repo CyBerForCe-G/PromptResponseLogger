@@ -1,5 +1,7 @@
+import { useEffect, useRef } from "react";
 import { Message } from "../models/Message";
-import MessageBubble from "./messageBubble";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Props {
     messages: Message[];
@@ -7,15 +9,22 @@ interface Props {
 }
 
 export default function ChatWindow({ messages, streaming }: Props) {
+    const bottomRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
     return (
         <div className="chat-window">
-            {messages.map((m, idx) => (
-                <MessageBubble
-                    key={m.id}
-                    message={m}
-                    streaming={streaming && idx === messages.length - 1}
-                />
+            {messages.map(msg => (
+                <div key={msg.id} className={`bubble ${msg.role}`}>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.content}
+                    </ReactMarkdown>
+                </div>
             ))}
+            <div ref={bottomRef} />
         </div>
     );
 }

@@ -37,11 +37,15 @@ public class AIController {
     public Flux<String> stream(@RequestBody PromptRequest promptRequest){
         StringBuilder fullResponse = new StringBuilder();
         return llmStreamService.generate(promptRequest.getPrompt())
-                .doOnNext(token -> {
-                    System.out.print(token);
-                    fullResponse.append(token);
-                })
-                .doOnComplete(() -> {System.out.print("Full Response: "+fullResponse);});
+                .concatWith(Flux.just("[DONE]"))
+                .onErrorResume(error -> {System.out.print(error.getMessage());
+                        return Flux.just("[ERROR]");
+                });
+//                .doOnNext(token -> {
+//                    System.out.print(token);
+//                    fullResponse.append(token);
+//                })
+//                .doOnComplete(() -> {System.out.print("Full Response: "+fullResponse);});
 
     }
 }
