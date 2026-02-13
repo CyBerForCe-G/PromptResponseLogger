@@ -1,6 +1,7 @@
 server:
   port: 8080
 
+
 llm:
   active-provider: groq
 
@@ -8,3 +9,31 @@ llm:
     api-key: dummy
     base-url: https://localhost
     model: test-model
+spring:
+  profiles:
+    active: dev
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test_google_client_id
+            client-secret: test_google_client_secret
+            scope:
+              - openid
+              - profile
+              - email
+            authorization-grant-type: authorisation_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: Google
+          microsoft:
+            client-id: test_google_client_id
+            client-secret: test_google_client_secret
+            scope:
+              - openid
+              - profile
+              - email
+            authorization-grant-type: authorisation_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: Microsoft
+

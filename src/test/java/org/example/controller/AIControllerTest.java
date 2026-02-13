@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.config.SecurityConfig;
 import org.example.constants.ApplicationConstants;
 import org.example.interfaces.LLMService;
 import org.example.interfaces.LLMStreamService;
@@ -10,7 +11,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,6 +21,7 @@ import reactor.core.publisher.Mono;
 import static org.mockito.ArgumentMatchers.anyString;
 
 @WebFluxTest(AIController.class)
+@Import(SecurityConfig.class)
 class AIControllerTest {
 
     @Autowired
@@ -35,6 +39,7 @@ class AIControllerTest {
     // ---------- /prompt TEST ----------
 
     @Test
+    @WithMockUser
     void prompt_shouldReturnResponse() {
         Mockito.when(llmService.generateResponse(anyString()))
                 .thenReturn(Mono.just("Hello from LLM"));
@@ -55,6 +60,7 @@ class AIControllerTest {
     // ---------- /stream TEST ----------
 
     @Test
+    @WithMockUser
     void stream_shouldReturnStreamingResponse() {
         Flux<String> mockStream = Flux.just("Hello ", "World", "!");
 
