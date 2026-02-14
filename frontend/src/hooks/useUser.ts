@@ -3,7 +3,7 @@ import {User} from "../models/user";
 import {fetchUser} from "../api/userApi";
 
 export function useUser() {
-    const {user, setUser} = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

@@ -1,6 +1,6 @@
-import {Message} from "../models/message";
 import {useState} from "react";
 import {streamPrompt} from "../api/streamApi";
+import {Message} from "../models/message";
 
 export function useChat() {
     const [messages, setMessages] = useState<Message[]>([]);

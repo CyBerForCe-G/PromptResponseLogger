@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: qa
   security:
     oauth2:
       client:
@@ -15,7 +15,7 @@ spring:
               - openid
               - profile
               - email
-            authorization-grant-type: authorisation_code
+            authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-name: Google
           microsoft:
@@ -25,7 +25,7 @@ spring:
               - openid
               - profile
               - email
-            authorization-grant-type: authorisation_code
+            authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-name: Microsoft
         provider:

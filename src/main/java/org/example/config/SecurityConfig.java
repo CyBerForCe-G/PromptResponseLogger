@@ -11,7 +11,7 @@ import org.springframework.security.web.server.authentication.RedirectServerAuth
 
 @Configuration
 @EnableWebFluxSecurity
-@Profile("!dev")
+@Profile("test")
 public class SecurityConfig {
 
     @Bean
